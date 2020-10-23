@@ -128,7 +128,7 @@ function draw() {
       gems.push(new Gem(random(100, width), random(100, height)));
       gemNum++;
     }
-    if (gemCount === gemNum && gemNum > 8) {
+    if (gemCount === gemNum + 1 && gemNum > 8) {
       level = 3;
       greet();
     }
