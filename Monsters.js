@@ -10,14 +10,14 @@ class Monster {
 
   show() {
     var pos = this.body.position;
-    // switch (this.num) {
-    //   case 0: image(this.image1, pos.x, pos.y, this.r, this.r);
-    //     break;
-    //   case 1: image(this.image2, pos.x, pos.y, this.r, this.r);
-    //     break;
-    //   default: image(this.image2, pos.x, pos.y, this.r, this.r);
-    //     break;
-    // }
-    ellipse(pos.x, pos.y, this.r, this.r);
+    switch (this.num) {
+      case 0: image(this.image1, pos.x, pos.y, this.r, this.r);
+        break;
+      case 1: image(this.image2, pos.x, pos.y, this.r, this.r);
+        break;
+      default: image(this.image2, pos.x, pos.y, this.r, this.r);
+        break;
+    }
+    // ellipse(pos.x, pos.y, this.r, this.r);
   }
 }
