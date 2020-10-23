@@ -4,7 +4,7 @@ class Monster {
     this.image2 = loadImage('images/monster2.png');
     this.body = Bodies.circle(x, y, 30, { restitution: 1.25 });
     World.add(world, this.body);
-    this.r = 30;
+    this.r = 60;
     this.num = floor(random(2));
   }
 

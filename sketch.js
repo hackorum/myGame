@@ -14,6 +14,7 @@ var gameOver = false;
 var showLava = true;
 var mons = [];
 var monNum = 0;
+var health = 100;
 
 function preload() {
   lavaimg = loadImage('images/lava.png');
@@ -42,17 +43,17 @@ function setup() {
   });
   World.add(world, ground);
 
-  s1 = Bodies.rectangle(width / 2, -10, width, 20, {
+  s1 = Bodies.rectangle(width / 2, -100, width, 20, {
     isStatic: true
   });
   World.add(world, s1);
 
-  s2 = Bodies.rectangle(-30, height / 2, 20, height, {
+  s2 = Bodies.rectangle(-100, height / 2, 20, height, {
     isStatic: true
   });
   World.add(world, s2);
 
-  s3 = Bodies.rectangle(630, height / 2, 20, height, {
+  s3 = Bodies.rectangle(700, height / 2, 20, height, {
     isStatic: true
   });
   World.add(world, s3);
@@ -135,7 +136,8 @@ function draw() {
   }
 
   if (level === 3) {
-    lev.html('Try to move away from the monsters and do not go out of the borders')
+    lev.html('Go away from the monsters which are trying to eat Sam and do not go out of the borders');
+    text("Health: " + health + "%", 10, 70);
     if (monNum < 7) {
       mons.push(new Monster(random(width), random(height)));
       monNum++;
@@ -143,6 +145,7 @@ function draw() {
     for (var i in mons) {
       mons[i].show();
     }
+    detectCollision();
   }
 
   collectGem(gem1.sprite, gem1);
@@ -155,6 +158,14 @@ function draw() {
   gameover();
 
   drawSprites();
+}
+
+function detectCollision() {
+  for (j in mons) {
+    if (Matter.SAT.collides(boy, mons[j].body).collided) {
+      health -= 2;
+    }
+  }
 }
 
 function greet() {
