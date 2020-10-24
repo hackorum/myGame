@@ -162,7 +162,7 @@ function draw() {
 
 function detectCollision() {
   for (j in mons) {
-    if (Matter.SAT.collides(boy, mons[j].body).collided) {
+    if (Matter.SAT.collides(boy, mons[j].body).collided && !gameOver) {
       health -= 2;
     }
   }
