@@ -169,7 +169,7 @@ function detectCollision() {
 }
 
 function greet() {
-  alert("Congratulations! You have successfully entered into the next level!");
+  alert("Congratulations! You have successfully entered the next level!");
 }
 
 function gameover() {
