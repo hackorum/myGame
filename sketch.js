@@ -160,15 +160,15 @@ function draw() {
   }
 
   if(level === 4) {
-    var box = createSprite(width / 2, height / 2);
+    var box = createSprite(width / 2 + 100, height / 2);
     box.addImage(cImg);
     var p = createP('Do you want to open this box? Click on any button.');
     p.position(20, 20);
     p.style('color', '#ffffff')
     var button1 = createButton('Yes');
     button1.position(20, 70);
-    var button1 = createButton('No');
-    button1.position(50, 70);
+    var button2 = createButton('No');
+    button2.position(70, 70);
   }
 
   collectGem(gem1.sprite, gem1);
