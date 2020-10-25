@@ -152,10 +152,12 @@ function draw() {
       mons[i].show();
     }
     setTimeout(() => {
-      level = 4;
-      if (al < 1) {
-        greet();
-        al++;
+      if (!gameOver) {
+        level = 4;
+        if (al < 1) {
+          greet();
+          al++;
+        }
       }
     }, 15000);
 
