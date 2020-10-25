@@ -19,6 +19,10 @@ var al = 0;
 var cImg;
 var dCount = 0;
 var open = false;
+var timeout = true;
+var lev5 = false;
+var mon1 = 0;
+var bigMon;
 
 function preload() {
   lavaimg = loadImage('images/lava.png');
@@ -36,6 +40,7 @@ function setup() {
   engine = Engine.create();
   world = engine.world;
 
+  bigMon = new Monster(width / 2 + 500, height / 2, true);
 
   boy = Bodies.rectangle(40, 200, 50, 100, {
     isStatic: false,
@@ -151,42 +156,63 @@ function draw() {
     for (var i in mons) {
       mons[i].show();
     }
-    setTimeout(() => {
-      if (!gameOver) {
-        level = 4;
-        if (al < 1) {
-          greet();
-          al++;
+    if (timeout) {
+      setTimeout(() => {
+        if (!gameOver) {
+          level = 4;
+          if (al < 1) {
+            greet();
+            al++;
+          }
         }
-      }
-    }, 15000);
+      }, 15000);
+    }
 
     detectCollision();
   }
 
-  if (level === 4) {
-    if (!open) {
-      image(cImg, width / 2, height / 2 + 100);
-    } else {
-      image(oImg, width / 2, height / 2 + 100, width, height);
+  if (!lev5) {
+    if (level === 4) {
+      timeout = false;
+      lev.html('Be careful there might be a trap.');
+      Body.setPosition(boy, { x: width / 2, y: height - 100 });
+      if (!open) {
+        image(cImg, width / 2, height / 2 + 100);
+      } else {
+        image(oImg, width / 2, height / 2 + 100, width, height);
+      }
+      if (dCount < 1) {
+        var p = createP('Do you want to open this box? Click on any button.');
+        p.position(20, 20);
+        p.style('color', '#ffffff')
+        var button1 = createButton('Yes');
+        button1.position(20, 70);
+        var button2 = createButton('No');
+        button2.position(70, 70);
+        dCount++;
+      }
     }
-    if (dCount < 1) {
-      var p = createP('Do you want to open this box? Click on any button.');
-      p.position(20, 20);
-      p.style('color', '#ffffff')
-      var button1 = createButton('Yes');
-      button1.position(20, 70);
-      var button2 = createButton('No');
-      button2.position(70, 70);
-      dCount++;
-    }
-    if (button1) {
-      button1.mousePressed(() => {
-        open = true;
-        p.html('Oh no! There was a monster in it! GAMEOVER');
-        gameOver = true;
-      });
-    }
+  }
+  if (button1) {
+    button1.mousePressed(() => {
+      open = true;
+      p.html('Oh no! There was a monster in it! GAMEOVER');
+      gameOver = true;
+    });
+  }
+  if (button2) {
+    button2.mouseClicked(() => {
+      greet();
+      removeElements();
+      lev5 = true;
+    });
+
+  }
+
+  if (lev5) {
+    level = 5;
+    Body.setPosition(bigMon.body, { x: width / 2, y: height / 2 });
+    bigMon.show();
   }
 
   collectGem(gem1.sprite, gem1);
