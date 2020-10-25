@@ -79,7 +79,6 @@ function setup() {
   gem1.show();
 
   Engine.run(engine);
-
   fill(255);
   rectMode(CENTER);
   imageMode(CENTER);
@@ -148,7 +147,6 @@ function draw() {
 
   if (level === 3) {
     lev.html('Go away from the monsters which are trying to eat Sam and do not go out of the borders');
-    text("Health: " + health + "%", 10, 70);
     if (monNum < 7) {
       mons.push(new Monster(random(width), random(height)));
       monNum++;
@@ -167,8 +165,6 @@ function draw() {
         }
       }, 15000);
     }
-
-    detectCollision();
   }
 
   if (!lev5) {
@@ -211,6 +207,7 @@ function draw() {
 
   if (lev5) {
     level = 5;
+    text("Health: " + health + "%", 10, 70);
     Body.setPosition(bigMon.body, { x: width / 2, y: height / 2 });
     bigMon.show();
   }
@@ -223,13 +220,14 @@ function draw() {
   }
 
   gameover();
+  detectCollision();
 
   drawSprites();
 }
 
 function detectCollision() {
   for (j in mons) {
-    if (Matter.SAT.collides(boy, mons[j].body).collided && !gameOver) {
+    if (Matter.SAT.collides(boy, bigMon.body).collided && !gameOver) {
       health -= 2;
     }
   }
