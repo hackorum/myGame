@@ -17,12 +17,15 @@ var monNum = 0;
 var health = 100;
 var al = 0;
 var cImg;
+var dCount = 0;
+var open = false;
 
 function preload() {
   lavaimg = loadImage('images/lava.png');
   personimg = loadImage('images/sprite_0.png');
   cryimg = loadImage('images/sprite_1.png');
   cImg = loadImage('images/treasureClosed.png');
+  oImg = loadImage('images/treasureEater.jpg');
 }
 
 function setup() {
@@ -150,25 +153,38 @@ function draw() {
     }
     setTimeout(() => {
       level = 4;
-      if(al < 1){
+      if (al < 1) {
         greet();
         al++;
       }
-    } , 15000);
-    
+    }, 15000);
+
     detectCollision();
   }
 
-  if(level === 4) {
-    var box = createSprite(width / 2 + 100, height / 2);
-    box.addImage(cImg);
-    var p = createP('Do you want to open this box? Click on any button.');
-    p.position(20, 20);
-    p.style('color', '#ffffff')
-    var button1 = createButton('Yes');
-    button1.position(20, 70);
-    var button2 = createButton('No');
-    button2.position(70, 70);
+  if (level === 4) {
+    if (!open) {
+      image(cImg, width / 2, height / 2 + 100);
+    } else {
+      image(oImg, width / 2, height / 2 + 100, width, height);
+    }
+    if (dCount < 1) {
+      var p = createP('Do you want to open this box? Click on any button.');
+      p.position(20, 20);
+      p.style('color', '#ffffff')
+      var button1 = createButton('Yes');
+      button1.position(20, 70);
+      var button2 = createButton('No');
+      button2.position(70, 70);
+      dCount++;
+    }
+    if (button1) {
+      button1.mousePressed(() => {
+        open = true;
+        p.html('Oh no! There was a monster in it! GAMEOVER');
+        gameOver = true;
+      });
+    }
   }
 
   collectGem(gem1.sprite, gem1);
