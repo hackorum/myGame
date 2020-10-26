@@ -8,7 +8,7 @@ class Monster {
       this.r = 60;
       this.num = floor(random(2));
     } else {
-      this.img1 = loadImage('images/bigMonster.png');
+      this.img1 = loadImage('images/energyCore.png');
       this.body = Bodies.circle(x, y, 60, { isStatic: false });
       World.add(world, this.body);
     }
@@ -28,7 +28,7 @@ class Monster {
           break;
       }
     } else {
-      ellipse(this.body.position.x, this.body.position.y, 60, 60);
+      image(this.img1, this.body.position.x, this.body.position.y, 120, 120);
     }
   }
 }

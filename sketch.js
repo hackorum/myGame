@@ -23,6 +23,8 @@ var timeout = true;
 var lev5 = false;
 var mon1 = 0;
 var bigMon;
+var sh = true;
+var pCount = 0;
 
 function preload() {
   lavaimg = loadImage('images/lava.png');
@@ -30,6 +32,10 @@ function preload() {
   cryimg = loadImage('images/sprite_1.png');
   cImg = loadImage('images/treasureClosed.png');
   oImg = loadImage('images/treasureEater.jpg');
+  ov = loadImage('images/gameOver.jpg');
+  sword = loadImage('images/sword.png');
+
+  gemSound = loadSound('gemSound.mp3');
 }
 
 function setup() {
@@ -91,8 +97,10 @@ function draw() {
 
   text("Gems: " + gemCount + "   Level: " + level, 10, 20);
 
-  if (!gameOver) {
+  if (!gameOver && sh) {
     image(personimg, boy.position.x, boy.position.y - 5, 50, 100);
+  } else {
+    image(sword, boy.position.x, boy.position.y, 50, 100);
   }
 
   if (showLava) {
@@ -123,7 +131,10 @@ function draw() {
     if (reachedLev1Checkpoint() && gemCount === 1) {
       greet();
       level = 2;
-      Body.setPosition(boy, { x: 30, y: height / 2 });
+      Body.setPosition(boy, {
+        x: 30,
+        y: height / 2
+      });
     }
 
   } else {
@@ -171,7 +182,10 @@ function draw() {
     if (level === 4) {
       timeout = false;
       lev.html('Be careful there might be a trap.');
-      Body.setPosition(boy, { x: width / 2, y: height - 100 });
+      Body.setPosition(boy, {
+        x: width / 2,
+        y: height - 100
+      });
       if (!open) {
         image(cImg, width / 2, height / 2 + 100);
       } else {
@@ -200,6 +214,10 @@ function draw() {
     button2.mouseClicked(() => {
       greet();
       removeElements();
+      Body.setPosition(boy, {
+        x: 90,
+        y: height / 2
+      });
       lev5 = true;
     });
 
@@ -207,8 +225,16 @@ function draw() {
 
   if (lev5) {
     level = 5;
-    text("Health: " + health + "%", 10, 70);
-    Body.setPosition(bigMon.body, { x: width / 2, y: height / 2 });
+    sh = false;
+    if (pCount < 1) {
+      des = createP('This is an energy core. Try to blast it so that I can get out of this cave.');
+      pCount++;
+    }
+    text("Energy Left in the core: " + floor(health) + "%", 10, 70);
+    Body.setPosition(bigMon.body, {
+      x: width / 2,
+      y: height / 2
+    });
     bigMon.show();
   }
 
@@ -221,15 +247,27 @@ function draw() {
 
   gameover();
   detectCollision();
+  core();
 
   drawSprites();
 }
 
-function detectCollision() {
-  for (j in mons) {
-    if (Matter.SAT.collides(boy, bigMon.body).collided && !gameOver) {
-      health -= 2;
+function core() {
+  if (health < 1) {
+    level = "Over";
+    World.remove(world, bigMon.body);
+    bg = createSprite(width / 2, height / 2);
+    bg.addImage(ov);
+    gameOver = true;
+    if (des) {
+      des.html('Thank you! You have blasted the core and have gotten out of the cave!');
     }
+  }
+}
+
+function detectCollision() {
+  if (Matter.SAT.collides(boy, bigMon.body).collided) {
+    health -= 5;
   }
 }
 
@@ -250,6 +288,7 @@ function collectGem(gemName, gem) {
     gemName.destroy();
     gemCount++;
     gem.isThere = false;
+    gemSound.play();
   }
 }
 
