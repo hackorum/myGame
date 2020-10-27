@@ -25,6 +25,8 @@ var mon1 = 0;
 var bigMon;
 var sh = true;
 var pCount = 0;
+var myHealth = 100;
+var cir;
 
 function preload() {
   lavaimg = loadImage('images/lava.png');
@@ -84,6 +86,8 @@ function setup() {
   gem1 = new Gem(width / 2 - 50, height / 2);
   gem1.show();
 
+  cir = new Circle();
+
   Engine.run(engine);
   fill(255);
   rectMode(CENTER);
@@ -99,7 +103,8 @@ function draw() {
 
   if (!gameOver && sh) {
     image(personimg, boy.position.x, boy.position.y - 5, 50, 100);
-  } else {
+  }
+  if (!sh) {
     image(sword, boy.position.x, boy.position.y, 50, 100);
   }
 
@@ -157,6 +162,7 @@ function draw() {
   }
 
   if (level === 3) {
+    text("Health: " + myHealth + "%", 10, 40);
     lev.html('Go away from the monsters which are trying to eat Sam and do not go out of the borders');
     if (monNum < 7) {
       mons.push(new Monster(random(width), random(height)));
@@ -226,6 +232,8 @@ function draw() {
   if (lev5) {
     level = 5;
     sh = false;
+    cir.show();
+    cir.update();
     if (pCount < 1) {
       des = createP('This is an energy core. Try to blast it so that I can get out of this cave.');
       pCount++;
@@ -245,9 +253,15 @@ function draw() {
     collectGem(gems[i].sprite, gems[i]);
   }
 
+  if (gameOver) {
+    textSize(25);
+    text("Game Over!", width / 2 - 80, height / 2 - 100);
+  }
+
   gameover();
   detectCollision();
   core();
+  level3health();
 
   drawSprites();
 }
@@ -267,7 +281,21 @@ function core() {
 
 function detectCollision() {
   if (Matter.SAT.collides(boy, bigMon.body).collided) {
-    health -= 5;
+    health -= 0.5;
+  }
+}
+
+function level3health() {
+  for (const j in mons) {
+    if (Matter.SAT.collides(boy, mons[j].body).collided) {
+      myHealth -= 5;
+    }
+  }
+  if (myHealth < 1) {
+    myHealth = 0;
+    gameOver = true;
+    textSize(25);
+    text("Game Over!", width / 2 - 80, height / 2 - 100);
   }
 }
 
