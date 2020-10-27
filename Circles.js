@@ -14,7 +14,7 @@ class Circle {
     }
 
     update() {
-        if (this.radius < width / 2 && !this.reverse && this.al > 10) {
+        if (this.radius < width / 2 - 100 && !this.reverse && this.al > 10) {
             this.radius += 1;
             this.al -= 0.65;
         } else {

@@ -27,6 +27,7 @@ var sh = true;
 var pCount = 0;
 var myHealth = 100;
 var cir;
+var s1 = true;
 
 function preload() {
   lavaimg = loadImage('images/lava.png');
@@ -38,6 +39,8 @@ function preload() {
   sword = loadImage('images/sword.png');
 
   gemSound = loadSound('gemSound.mp3');
+  dieSound = loadSound('die.mp3');
+  checkSound = loadSound('checkPoint.mp3');
 }
 
 function setup() {
@@ -221,8 +224,8 @@ function draw() {
       greet();
       removeElements();
       Body.setPosition(boy, {
-        x: 90,
-        y: height / 2
+        x: width / 2,
+        y: height / 2 + 100
       });
       lev5 = true;
     });
@@ -256,6 +259,11 @@ function draw() {
   if (gameOver) {
     textSize(25);
     text("Game Over!", width / 2 - 80, height / 2 - 100);
+    World.remove(world, boy);
+    if (s1) {
+      dieSound.play();
+      s1 = false;
+    }
   }
 
   gameover();
@@ -300,6 +308,7 @@ function level3health() {
 }
 
 function greet() {
+  checkSound.play();
   alert("Congratulations! You have successfully entered the next level!");
 }
 
