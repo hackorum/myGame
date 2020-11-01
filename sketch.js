@@ -44,7 +44,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(600, 400);
+  createCanvas(windowWidth, windowHeight - 100);
 
   lev = createP('Hello! I am Sam. I am stuck in this cave full of lava. This cave belongs to the pirate Henry Avery. He hid all of his treasure here in the 15th century! But, I do not  want it. However, we could collect some gems on the way. There are traps everywhere. Be careful and look out for some hints carved on the walls.');
 
@@ -53,14 +53,14 @@ function setup() {
 
   bigMon = new Monster(width / 2 + 500, height / 2, true);
 
-  boy = Bodies.rectangle(40, 200, 50, 100, {
+  boy = Bodies.rectangle(width / 10, height / 10, 50, 100, {
     isStatic: false,
     restitution: 0.8,
     friction: 0.8
   });
   World.add(world, boy);
 
-  ground = Bodies.rectangle(width / 2, 390, width, 20, {
+  ground = Bodies.rectangle(width / 2, height - 10, width, 20, {
     isStatic: true
   });
   World.add(world, ground);
@@ -75,15 +75,15 @@ function setup() {
   });
   World.add(world, s2);
 
-  s3 = Bodies.rectangle(700, height / 2, 20, height, {
+  s3 = Bodies.rectangle(width + 100, height / 2, 20, height, {
     isStatic: true
   });
   World.add(world, s3);
 
-  b1 = new Block(50, 350, 80, 20);
-  b2 = new Block(140, 270, 80, 20);
-  b3 = new Block(420, 230, 80, 20);
-  b4 = new Block(500, 100, 80, 20);
+  b1 = new Block(width / 10, ground.position.y - 80, 80, 20);
+  b2 = new Block(width / 3.8 + 50, height / 1.5, 80, 20);
+  b3 = new Block(width / 1.5, height / 2.1, 80, 20);
+  b4 = new Block(width / 1.2, height / 4, 80, 20);
   blocks.push(b1, b2, b3, b4);
 
   gem1 = new Gem(width / 2 - 50, height / 2);
@@ -117,11 +117,11 @@ function draw() {
 
   if (level === 1) {
     if (!gameOver) {
-      text("Reach Here!", 470, 80);
+      text("Reach Here!", width / 1.3, height / 5);
       fill(200);
       textSize(15);
-      text("Use Up arrow keys to jump.", 270, 330);
-      text("Collect the gem and reach to the topmost block.", 270, 370)
+      text("Use Up arrow keys to jump.", 50, height - 100);
+      text("Collect the gem and reach to the top.", 0, height - 50)
     }
 
     b1.show();
@@ -167,7 +167,7 @@ function draw() {
   if (level === 3) {
     text("Health: " + myHealth + "%", 10, 40);
     lev.html('Go away from the monsters which are trying to eat Sam and do not go out of the borders');
-    if (monNum < 7) {
+    if (monNum < 5) {
       mons.push(new Monster(random(width), random(height)));
       monNum++;
     }
@@ -338,7 +338,7 @@ function touchedLava() {
 }
 
 function reachedLev1Checkpoint() {
-  if (boy.position.x >= 490 && boy.position.y < 100 && level === 1) {
+  if (boy.position.x >= width / 1.2 && boy.position.y < height / 4 && level === 1) {
     return true;
   } else {
     return;
